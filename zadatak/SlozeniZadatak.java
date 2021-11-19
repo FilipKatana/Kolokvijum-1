@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import osoba.Osoba;
 
-public class SlozeniZadatak extends ZadatakNadPredmetom implements Izvrsivo {
+public class SlozeniZadatak extends RadniZadatak implements Izvrsivo {
 	private ArrayList<RadniZadatak> zadaci = new ArrayList<RadniZadatak>();
 
-	public SlozeniZadatak(String naziv, String opis, Osoba zaduzenaOsoba, Izvrsivo predmetZadatka, RadniZadatak ...zadaci) {
-		super(naziv, opis, zaduzenaOsoba, predmetZadatka);
+	public SlozeniZadatak(String naziv, String opis, Izvrsivo predmetZadatka, RadniZadatak ...zadaci) {
+		super(naziv, opis, predmetZadatka);
 
 
 		for (RadniZadatak x : zadaci) {

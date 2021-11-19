@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import osoba.Osoba;
 import uredjaj.Uredjaj;
 
-public class Nabavka extends ZadatakNadPredmetom {
+public class Nabavka extends RadniZadatak {
 	private int kolicina;
 
-	public Nabavka(String naziv, String opis, Osoba oso, Izvrsivo predmetZadatka, int kolicina) {
-		super(naziv, opis, oso, predmetZadatka);
+	public Nabavka(String naziv, String opis, Izvrsivo predmetZadatka, int kolicina) {
+		super(naziv, opis, predmetZadatka);
 		this.kolicina = kolicina;
 	}
 	

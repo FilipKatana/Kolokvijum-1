@@ -1,8 +1,6 @@
 package zadatak;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.Semaphore;
-
 import osoba.Osoba;
 import registar.RegistarZadataka;
 
@@ -12,16 +10,15 @@ public abstract class RadniZadatak implements Izvrsivo {
 	private LocalDateTime vremeZavrsetka;
 	private StatusZadatka status;
 	private Osoba zaduzenaOsoba;
-	private RegistarZadataka registar;
+	private Izvrsivo predmetZadatka;
 	
-	private Semaphore dozvola = new Semaphore(1);
 	
-	public RadniZadatak(String naziv, String opis, Osoba zaduz) {
+	public RadniZadatak(String naziv, String opis, Izvrsivo predmetZadatka) {
 		this.naziv = naziv;
 		this.opis = opis;
 		this.vremeIzdavanja = LocalDateTime.now();
 		this.status = StatusZadatka.ZADAT;
-		this.zaduzenaOsoba = null;
+		this.predmetZadatka = predmetZadatka;
 	}
 	public String getNaziv() {
 		return naziv;
@@ -39,6 +36,9 @@ public abstract class RadniZadatak implements Izvrsivo {
 		return status;
 	}
 	
+	public void dodeliOsobu(Osoba o) {
+		this.zaduzenaOsoba = o;
+	}
 	
 	public boolean isSlozen() {
 		return false;
@@ -48,17 +48,12 @@ public abstract class RadniZadatak implements Izvrsivo {
 		System.out.println("Zadatak " + this.naziv + " od " + ((this.zaduzenaOsoba == null) ? "NULL" : this.zaduzenaOsoba.getIme()));
 	}
 	
-	public void setRegistar(RegistarZadataka reg) {
-		this.registar = reg;
+	public void setStatus(StatusZadatka s) {
+		this.status = s;
 	}
-	
-	public void zatrazi(Osoba o) {
-		this.dozvola.acquireUninterruptibly();
-		if (this.zaduzenaOsoba == null) {
-			this.zaduzenaOsoba = o;
-			this.status = StatusZadatka.OTPOCET;
-		}
-		this.dozvola.release();
+
+	public Izvrsivo getPredmetZadatka() {
+		return predmetZadatka;
 	}
 	
 	

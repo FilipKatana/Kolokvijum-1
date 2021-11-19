@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import osoba.Osoba;
 import uredjaj.Uredjaj;
 
-public class Odrzavanje extends ZadatakNadPredmetom {
+public class Odrzavanje extends RadniZadatak {
 	private String opisPopravke;
 
-	public Odrzavanje(String naziv, String opis, Osoba oso, Izvrsivo predmetZadatka, String opisPopravke) {
-		super(naziv, opis, oso, predmetZadatka);
+	public Odrzavanje(String naziv, String opis, Izvrsivo predmetZadatka, String opisPopravke) {
+		super(naziv, opis, predmetZadatka);
 		this.opisPopravke = opisPopravke;
 	}
 
@@ -19,7 +19,7 @@ public class Odrzavanje extends ZadatakNadPredmetom {
 	
 	public void ispisi() {
 		super.ispisi();
-		System.out.println("Opis održavanja: " + this.opisPopravke);
+		System.out.println("Opis odrï¿½avanja: " + this.opisPopravke);
 	}	
 	
 	

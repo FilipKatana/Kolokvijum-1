@@ -9,6 +9,7 @@ import uredjaj.Uredjaj;
 import zadatak.Izvrsivo;
 import zadatak.Nabavka;
 import zadatak.Odrzavanje;
+import zadatak.RadniZadatak;
 import zadatak.SlozeniZadatak;
 import zadatak.StatusZadatka;
 
@@ -17,15 +18,15 @@ public class Main {
 
 	
 	public static void main(String[] args) {
-		Osoba o1 = new Osoba("Sava", "MarkiÊ");
+		Osoba o1 = new Osoba("Sava", "Markiƒá");
 		
 		Uredjaj u = new Uredjaj("Kompjuter", 600.7);
 		
-		Izvrsivo o2 = new Osoba("Mila", "MiliÊ");
+		Izvrsivo o2 = new Osoba("Mila", "Mili≈æ");
 		
-		Odrzavanje od = new Odrzavanje("Odrûavanje 1", "Popravljanje kom", o1, u, "Pokvario se CPU");
+		Odrzavanje od = new Odrzavanje("Odr≈æavanje 1", "Popravljanje kom", u, "Pokvario se CPU");
 		
-		Nabavka nb = new Nabavka("Nabavka 1", "Nabavka kompjutera", o1, o2, 20);
+		Nabavka nb = new Nabavka("Nabavka 1", "Nabavka kompjutera", o2, 20);
 		
 		RegistarZadataka registar = new RegistarZadataka(od);
 		registar.dodaj(nb);
@@ -45,10 +46,49 @@ public class Main {
 		
 		System.out.println("==============================================");
 		
-		SlozeniZadatak slozeni = new SlozeniZadatak("Sloûen 1", "komplikovan", o1, o2, 
-				new SlozeniZadatak("Sloûen 2", "jako teûak", o1, o2, od, nb), nb);
+		SlozeniZadatak slozeni = new SlozeniZadatak("Slo≈æen 1", "komplikovan", o2, 
+				new SlozeniZadatak("Slo≈æen 2", "jako te≈æak", o2, od, nb), nb);
 		
 		slozeni.ispisi(1);
+		
+		System.out.println("##########MULTITHREAD##################");
+		
+		Runnable run = new Runnable() {
+			
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep((long) Math.random()*100);
+						RadniZadatak rad = registar.zahtevaj(o1);
+						Thread.sleep((long) Math.random()*100);
+						if (rad.getStatus() == StatusZadatka.OTPOCET) {
+							rad.setStatus((Math.random() <= 0.5) ? StatusZadatka.IZVRSEN : StatusZadatka.NEIZVRSEN);
+							registar.dodajIzvrsen(rad);
+						} else {
+							rad.setStatus(StatusZadatka.OTPOCET);
+							registar.dodaj(rad);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		};
+		
+		
+		Thread t1 = new Thread(run);
+		t1.start();
+		try {
+			t1.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		registar.izvrseniPrint();
+		
 		
 	}
 }
